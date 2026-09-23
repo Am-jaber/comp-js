@@ -8,8 +8,15 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
+      tsconfigPath: resolve(__dirname, "tsconfig.app.json"),
       include: ["src"],
-      exclude: ["src/App.tsx", "src/main.tsx", "src/**/*.test.{ts,tsx}"],
+      exclude: [
+        "src/App.tsx",
+        "src/main.tsx",
+        "src/setupTests.ts",
+        "src/lib/styles.css",
+        "src/**/*.test.{ts,tsx}",
+      ],
     }),
   ],
   test: {
@@ -23,6 +30,7 @@ export default defineConfig({
       name: "CompJs",
       formats: ["es", "cjs"],
       fileName: (format) => `comp-js.${format === "es" ? "js" : "cjs"}`,
+      cssFileName: "style",
     },
     rollupOptions: {
       external: [

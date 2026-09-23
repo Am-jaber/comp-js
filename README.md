@@ -1,73 +1,70 @@
-# React + TypeScript + Vite
+# comp-js
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React component library built with Vite, TypeScript, and Tailwind CSS v4. Components ship with their own self-contained, precompiled CSS, so they render correctly regardless of whether the consuming app uses Tailwind, what version, or what theme it's configured with.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install comp-js
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Peer dependencies (install alongside):
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm install react react-dom
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Usage
+
+Import the compiled stylesheet once in your app's entry point, then use components as usual:
+
+```tsx
+import "comp-js/style.css";
+import { Button } from "comp-js";
+
+function App() {
+  return <Button variant="primary">Click me</Button>;
+}
+```
+
+## Theming
+
+Component colors are driven by CSS custom properties with built-in defaults, so you can restyle them without touching Tailwind or knowing anything about the library's internals. For example, to recolor `Button`:
+
+```css
+:root {
+  --cj-button-primary-bg: #16a34a;
+  --cj-button-primary-bg-hover: #15803d;
+}
+```
+
+See `src/lib/styles.css` for the full list of available variables.
+
+## Development
+
+```bash
+npm run start    # dev server with a live showcase (src/App.tsx) for building/testing components
+npm run build    # type-check and build the library to dist/
+npm run test     # run the test suite (Vitest + React Testing Library)
+npm run lint     # run ESLint
+```
+
+### Adding a component
+
+1. Create `src/lib/components/<Name>/<Name>.tsx`.
+2. Add a barrel `src/lib/components/<Name>/index.ts` that re-exports it.
+3. Re-export the new barrel from `src/lib/components/index.ts`.
+4. If the component needs themeable colors, define CSS custom properties and semantic classes in `src/lib/styles.css` (see `Button` for the pattern) rather than hardcoding Tailwind colors directly in the component — this keeps styling self-contained and consistent with how the library ships.
+5. Add tests alongside the component (`<Name>.test.tsx`) and render it in `src/App.tsx` to check it visually via `npm run start`.
+
+## Project structure
+
+```
+src/
+  lib/            # the published library
+    components/   # component source, one folder per component
+    styles.css     # theme variables + component CSS (compiled to dist/style.css)
+    index.ts       # public exports
+  hooks/          # shared hooks (re-exported from the library)
+  App.tsx         # local dev showcase, not shipped in the library
 ```

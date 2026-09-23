@@ -1,0 +1,29 @@
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities) source(none);
+@source "./components/**/*.{ts,tsx}";
+
+:root {
+  --cj-button-primary-bg: #2563eb;
+  --cj-button-primary-bg-hover: #1d4ed8;
+  --cj-button-primary-text: #ffffff;
+
+  --cj-button-secondary-bg: #e5e7eb;
+  --cj-button-secondary-bg-hover: #d1d5db;
+  --cj-button-secondary-text: #111827;
+}
+
+.cj-button--primary {
+  background-color: var(--cj-button-primary-bg);
+  color: var(--cj-button-primary-text);
+}
+.cj-button--primary:hover {
+  background-color: var(--cj-button-primary-bg-hover);
+}
+
+.cj-button--secondary {
+  background-color: var(--cj-button-secondary-bg);
+  color: var(--cj-button-secondary-text);
+}
+.cj-button--secondary:hover {
+  background-color: var(--cj-button-secondary-bg-hover);
+}

@@ -1,7 +1,7 @@
 {
   "name": "comp-js",
   "version": "0.0.0",
-  "sideEffects": false,
+  "sideEffects": true,
   "type": "module",
   "main": "dist/comp-js.cjs",
   "module": "dist/comp-js.js",
@@ -11,7 +11,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/comp-js.js",
       "require": "./dist/comp-js.cjs"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "files": [
     "dist"
